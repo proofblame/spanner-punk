@@ -1,5 +1,5 @@
 ##Установка
 
-Выполнить:  npm run start
+Выполнить:  ```sh npm run start ```
 
 Перейти по адресу: http://localhost:3000/static
