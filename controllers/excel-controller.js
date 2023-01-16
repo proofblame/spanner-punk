@@ -2,8 +2,10 @@ const multer = require('multer')
 const { parse } = require('../services/excel-service')
 var fs = require("fs");
 const { PythonShell } = require('python-shell');
-const {spawn} = require('child_process')
+const { spawn } = require('child_process')
 // import {PythonShell} from 'python-shell';
+const { getExtension } = require('../utils/getExtension')
+const { checkExtension } = require('../utils/checkExtension')
 
 
 const storage = multer.diskStorage({
@@ -11,30 +13,44 @@ const storage = multer.diskStorage({
     cb(null, 'uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname)
+    cb(null, `${file.fieldname}-${Date.now()}`)
   }
 })
 
-const upload = multer({ storage: storage })
+// Проверка mimetype
+const validateExcelFile = (req, file, cb) => {
+  if (!file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+    cb(null, false);
+  }
+  let extension = getExtension(file.originalname)
+  let isExcel = checkExtension(extension, 'xlsx')
+  if (!isExcel) {
+    cb(null, false);
+    throw new Error('Файл должен быть .xlsx или .xlx')
+  }
+  cb(null, true);
+}
 
-// const childPython = spawn('python', [`${__dirname}/python/Sber_excel.py`])
-
-
+const upload = multer({ storage: storage, fileFilter: validateExcelFile })
 
 const uploadFile = async (req, res) => {
-  console.log(req.file.originalname)
-  const childPython = spawn('python', [`${__dirname}/../python/python_script.py`, `${__dirname}/../uploads/`, `${req.file.originalname}`])
+  let file = req.file;
+  if (!file) {
+    throw new Error('Ошибка загрузки файла')
+  }
+  // console.log(file)
 
-  childPython.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`)
-    console.log(data)
-  })
-  childPython.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`)
-  })
-  childPython.on('close', (code) => {
-    console.log(`Child process exited with code: ${code}`)
-  })
+  // const childPython = spawn('python', [`${__dirname}/../python/python_script.py`, `${__dirname}/../uploads/`, `${req.file.fieldname}`])
+
+  // childPython.stdout.on('data', (data) => {
+  //   console.log(`stdout: ${data}`)
+  // })
+  // childPython.stderr.on('data', (data) => {
+  //   console.error(`stderr: ${data}`)
+  // })
+  // childPython.on('close', (code) => {
+  //   console.log(`Child process exited with code: ${code}`)
+  // })
 
   console.log('//------------------Res---------------//')
 
