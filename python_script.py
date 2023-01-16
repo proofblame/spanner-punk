@@ -120,7 +120,7 @@ for col in check_columns_empty_val:
 
 # Округление значений в Дебет, Кредит
 df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].round(2)
-output_file = './outputs/' + file_name + '.json'
-df.to_json(output_file, orient='records', force_ascii=False)
+output_file_path = output_directory + file_name + '.json'
+df.to_json(output_file_path, orient='records', force_ascii=False)
 
 print(output_directory)
