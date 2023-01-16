@@ -7,6 +7,8 @@ import pandas as pd
 directory = sys.argv[1]
 file_name = sys.argv[2]
 file_extension = sys.argv[3]
+output_directory = sys.argv[4]
+
 path_to_file = directory + file_name + file_extension
 
 xlsx = pd.ExcelFile(path_to_file)
@@ -121,4 +123,4 @@ df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].roun
 output_file = './outputs/' + file_name + '.json'
 df.to_json(output_file, orient='records', force_ascii=False)
 
-print(output_file)
+print(output_directory)
