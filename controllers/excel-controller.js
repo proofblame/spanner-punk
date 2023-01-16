@@ -2,13 +2,14 @@ const multer = require('multer')
 const { parse } = require('../services/excel-service')
 var fs = require("fs");
 const { PythonShell } = require('python-shell');
+// import {PythonShell} from 'python-shell';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + '.xlsx')
+    cb(null, file.originalname)
   }
 })
 
@@ -16,14 +17,18 @@ const upload = multer({ storage: storage })
 
 
 const uploadFile = async (req, res) => {
-  console.log(storage)
+
+
+
+  console.log('//------------------Res---------------//')
+  console.log(req.file)
   const options = {
     // pythonPath: ['C:\Users\MarokkoTV\AppData\Local\Programs\Python\Python310\python.exe'],
     pythonOptions: ['-u'],
     scriptPath: './python',
-    encoding: 'utf8',
-    mode: 'binary',
-    args: []
+    // encoding: 'utf8',
+    // mode: 'binary',
+    // args: []
   }
 
 
