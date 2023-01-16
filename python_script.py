@@ -6,7 +6,7 @@ import pandas as pd
 
 # file_name = "./Выписки по р. с. и иные документы/Exel/СберБизнес 1,2 кв 2021.xlsx"
 # file_name = "../Выписки по р. с. и иные документы/Сбер/СберБизнес2,3 кв 2021.xlsx"
-file_name = "../Выписки по р. с. и иные документы/Сбер/СберБизнес2,3 кв 2021.xlsx"
+file_name = "./upload/test.xlsx"
 
 
 # class MyHandler(FileSystemEventHandler):
@@ -116,7 +116,7 @@ for col in clear_cols:
                 inn_dict[df[df.columns[col]][index].strip().lower()] = df[df.columns[col - 1]][index].strip()
 
     df[df.columns[col]] = df[df.columns[col]].str.replace('nan', '').str.strip()
-
+print(df)
 
 # for i in df.columns:
 #     df[i] = df[i].str.replace('\n', ' ')
