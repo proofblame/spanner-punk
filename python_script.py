@@ -6,7 +6,10 @@ import pandas as pd
 # file_name = "./uploads/sber.xlsx"
 directory = sys.argv[1]
 file_name = sys.argv[2]
-path_to_file = directory + file_name
+file_extension = sys.argv[3]
+output_directory = sys.argv[4]
+
+path_to_file = directory + file_name + file_extension
 
 xlsx = pd.ExcelFile(path_to_file)
 lst_names = xlsx.sheet_names
@@ -117,6 +120,7 @@ for col in check_columns_empty_val:
 
 # Округление значений в Дебет, Кредит
 df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].round(2)
-df.to_json('./outputs/' + file_name, orient='records', force_ascii=False)
+output_file_path = output_directory + file_name + '.json'
+df.to_json(output_file_path, orient='records', force_ascii=False)
 
-print('./outputs/' + file_name)
+print(output_directory)

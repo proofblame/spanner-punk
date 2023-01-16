@@ -1,36 +1,23 @@
 import os.path
-# import concatenate as con
-# from watchdog.observers import Observer
-# from watchdog.events import FileSystemEventHandler
+import sys
 import pandas as pd
 
-# file_name = "./Выписки по р. с. и иные документы/Exel/СберБизнес 1,2 кв 2021.xlsx"
-# file_name = "../Выписки по р. с. и иные документы/Сбер/СберБизнес2,3 кв 2021.xlsx"
-file_name = "./uploads/res.xlsx"
 
+# file_name = "./uploads/sber.xlsx"
+directory = sys.argv[1]
+file_name = sys.argv[2]
+file_extension = sys.argv[3]
+output_directory = sys.argv[4]
 
-# class MyHandler(FileSystemEventHandler):
-#     # def on_any_event(self, event):
-#     #     print(event.event_type, event.src_path)
-#
-#     def on_created(self, event):
-#         file_name = event.src_path
+path_to_file = directory + file_name + file_extension
 
-
-# dir_path = os.getcwd()
-# #Todo write path
-# event_handler = MyHandler()
-# observer = Observer()
-# observer.schedule(event_handler, path='../excel/', recursive=False)
-# observer.start()
-
-xlsx = pd.ExcelFile(file_name)
+xlsx = pd.ExcelFile(path_to_file)
 lst_names = xlsx.sheet_names
 
 # Поиск заголовка
 df = pd.read_excel(xlsx, sheet_name=lst_names[0])
 df.dropna(axis='columns', how='all', inplace=True)
-print(df)
+
 # Поиск строки с заголовком
 index = -1
 for string in df.values:
@@ -45,7 +32,7 @@ for string in df.values:
         df.columns = df.iloc[0]
         break
     df.drop(labels=index, inplace=True)
-print(df)
+
 
 df_with_header = df
 worksheets_dfs = []
@@ -133,6 +120,7 @@ for col in check_columns_empty_val:
 
 # Округление значений в Дебет, Кредит
 df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].round(2)
-print(df.to_json(orient='records', force_ascii=False))
-# print(df[df.columns[-3]].astype(float).sum().round(2))
-# print(df[df.columns[-2]].astype(float).sum().round(2))
+output_file_path = output_directory + file_name + '.json'
+df.to_json(output_file_path, orient='records', force_ascii=False)
+
+print(output_directory)
