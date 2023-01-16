@@ -1,18 +1,28 @@
 import pandas as pd
 import os
-
+import io
 
 # print(os.listdir())
 directory_name = os.listdir('./uploads/')
+# directory_name = os.listdir('../uploads/')
 
 for filenames in directory_name:
         if filenames.endswith('.xlsx'):
             file = './uploads/'+filenames
-            
+            # file = '../uploads/'+filenames
+
+
+            # fileObj = io.open(file, "r", "utf8" )
+            # text = fileObj.read() # или читайте по строке
+            # fileObj.close()
+            # print(text)
+            encoding = io.text_encoding('utf-8')  # stacklevel=2
+            with open(file,'r', encoding) as f:
+                print(f.read())
             
             xlsx = pd.ExcelFile(file)
             lst_names = xlsx.sheet_names
-            
+           
             # Поиск заголовка
             df = pd.read_excel(xlsx, sheet_name=lst_names[0])
             
