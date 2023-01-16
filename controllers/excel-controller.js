@@ -23,7 +23,7 @@ const upload = multer({ storage: storage })
 
 const uploadFile = async (req, res) => {
   console.log(req.file.originalname)
-  const childPython = spawn('python', [`${__dirname}/../python/Sber_excel.py`, `${__dirname}/../uploads/${req.file.originalname}`])
+  const childPython = spawn('python', [`${__dirname}/../python/python_script.py`, `${__dirname}/../uploads/`, `${req.file.originalname}`])
 
   childPython.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)
