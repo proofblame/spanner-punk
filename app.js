@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const multer = require('multer')
-const { PythonShell } = require('python-shell');
+
 // const pyshell = new PythonShell(__dirname + '/python/Sber_excel.py');
 const {uploadFile, upload} = require('./controllers/excel-controller')
 

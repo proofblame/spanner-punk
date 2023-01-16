@@ -16,11 +16,18 @@ const upload = multer({ storage: storage })
 
 
 const uploadFile = async (req, res) => {
-  const params = {
-    path: req.file.path
+  console.log(storage)
+  const options = {
+    // pythonPath: ['C:\Users\MarokkoTV\AppData\Local\Programs\Python\Python310\python.exe'],
+    pythonOptions: ['-u'],
+    scriptPath: './python',
+    encoding: 'utf8',
+    mode: 'binary',
+    args: []
   }
 
-    PythonShell.run('./python/Sber_excel.py', params, function (err, res) {
+
+    PythonShell.run('Sber_excel.py', options, function (err, res) {
       if (err) throw err;
       console.log(res);
   });
