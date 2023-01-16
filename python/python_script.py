@@ -1,7 +1,9 @@
 import os.path
 import sys
 import pandas as pd
+import warnings
 
+warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
 # file_name = "./uploads/sber.xlsx"
 directory = sys.argv[1]
@@ -123,4 +125,4 @@ df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].roun
 output_file_path = output_directory + file_name + '.json'
 df.to_json(output_file_path, orient='records', force_ascii=False)
 
-print(output_directory)
+print(r'{"status": "success"}')
