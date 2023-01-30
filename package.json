@@ -19,6 +19,8 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "chromedriver": "^109.0.0",
+    "nodemon": "^2.0.20",
+    "selenium-webdriver": "^4.8.0"
   }
 }
