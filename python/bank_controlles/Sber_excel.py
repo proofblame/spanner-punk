@@ -6,9 +6,13 @@ import warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
 # file_name = "./uploads/sber.xlsx"
+# directory
 directory = sys.argv[1]
+# file_name
 file_name = sys.argv[2]
+# file_extension
 file_extension = sys.argv[3]
+# output_directory
 output_directory = sys.argv[4]
 
 path_to_file = directory + file_name + file_extension
