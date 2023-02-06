@@ -35,4 +35,4 @@ button.click()
 # Time before close
 time.sleep(10)
 driver.close()
-print(r'{"status": "success"}')
+print(r'{"message": "pdf_converted"}')
