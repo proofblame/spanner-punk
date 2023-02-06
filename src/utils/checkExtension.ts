@@ -1,14 +1,11 @@
-function checkExtension(extension, referenceList) {
+function checkExtension(extension: string, referenceList: string | string[]) {
+  const references = Array.isArray(referenceList) ? referenceList : new Array(referenceList);
 
-  const references = Array.isArray(referenceList) ? referenceList : new Array(referenceList)
+  const result = references.some((reference) => reference === extension);
 
-  const result = references.some((reference) => {
-    return reference === extension
-  })
-
-  return result
+  return result;
 }
 
 module.exports = {
-  checkExtension
-}
+  checkExtension,
+};

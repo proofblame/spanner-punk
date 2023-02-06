@@ -1,5 +1,5 @@
 const convertExcel = () => {};
 
 module.exports = {
-    convertExcel,
+  convertExcel,
 };

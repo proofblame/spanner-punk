@@ -1,21 +1,19 @@
-import express from 'express';
+import express from "express";
 
+import dotenv from "dotenv";
 
+import router from "./routes";
 
-
-
-// const pyshell = new PythonShell(__dirname + '/python/Sber_excel.py');
-// import { uploadFile, upload } from './controllers/excel-controller';
+dotenv.config();
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-
-app.use('/static', express.static(__dirname + '/static'));
+app.use(router);
 
 // app.post('/post', upload.single('file'), uploadFile)
 
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`)
-})
+  console.log(`App listening on port ${PORT}`);
+});
