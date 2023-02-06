@@ -1,9 +1,6 @@
 const multer = require('multer')
-const { parse } = require('../services/excel-service')
 var fs = require("fs");
-const { PythonShell } = require('python-shell');
 const { spawn } = require('child_process')
-// import {PythonShell} from 'python-shell';
 const { getExtension } = require('../utils/getExtension')
 const { checkExtension } = require('../utils/checkExtension')
 const { deleteExtension } = require('../utils/deleteExtension')
