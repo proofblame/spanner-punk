@@ -15,7 +15,8 @@ file_extension = sys.argv[3]
 # output_directory
 output_directory = sys.argv[4]
 
-path_to_file = directory + file_name + file_extension
+path_to_file = directory + file_name + "." + file_extension
+# print(path_to_file)
 
 xlsx = pd.ExcelFile(path_to_file)
 lst_names = xlsx.sheet_names

@@ -39,7 +39,7 @@ export const uploadFile = async (req: Request) => {
   if (!file) {
     throw new Error("Ошибка загрузки файла");
   }
-  console.log();
+
   const { filename, originalname } = file;
   const extension = Extention.get(originalname);
   const isExcel = Extention.check(extension, "xlsx");
