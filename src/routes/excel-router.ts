@@ -1,5 +1,8 @@
-const convertExcel = () => {};
+import express from "express";
+import { EXCEL_ROUTE } from "../utils/constants";
 
-module.exports = {
-  convertExcel,
-};
+const router = express.Router();
+
+router.post(EXCEL_ROUTE);
+
+export default router;
