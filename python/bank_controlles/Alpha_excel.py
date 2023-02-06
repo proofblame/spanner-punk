@@ -33,15 +33,15 @@ for string in df.values:
         df.columns = df.iloc[0]
         break
     df.drop(labels=index, inplace=True)
-# Удаление последних столбцов
+# Удаление последних столбцов и ненужных
 df = df.drop(columns=df.iloc[:, -2:])
 df.columns = ['Дата', 'Номер документа', 'Дебет', 'Кредит', 'Контрагент', 'ИНН', 'КПП',
               'Счет', 'БИК', 'Наименование банка', 'Назначение платежа']
-
 df = df.drop(columns=[df.columns[1], df.columns[6], df.columns[7]])
 df.dropna(axis=0, how='all', inplace=True)
 df.reset_index(drop=True, inplace=True)
 
+# Поиск заголовка
 index = -1
 for i in df[df.columns[0]].values:
     index += 1
