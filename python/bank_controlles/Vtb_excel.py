@@ -24,8 +24,9 @@ df.dropna(axis='columns', how='all', inplace=True)
 # Поиск строки с заголовком
 cont.find_header(df)
 # Удаление столбцов
-for i in [1, 2, 5]:
-    df = df.drop(columns=[df.columns[i]], inplace=True)
+
+df = df.drop(columns=[df.columns[1], df.columns[2], df.columns[5]])
+
 df.dropna(axis=0, how='all', inplace=True)
 df.reset_index(drop=True, inplace=True)
 

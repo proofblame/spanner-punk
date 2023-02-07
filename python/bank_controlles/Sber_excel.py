@@ -32,7 +32,7 @@ cont.find_header(df)
 df_with_header = df
 worksheets_dfs = []
 
-# Очистка всего, кроме колонок
+# Todo function Очистка всего, кроме колонок
 for worksheet in lst_names[1:]:
     df = pd.read_excel(xlsx, sheet_name=worksheet, header=None)
     if df.shape[1] > 8:
@@ -54,9 +54,7 @@ cont.check_date(df)
 
 df.dropna(axis='columns', how='all', inplace=True)
 
-for i in (-2, -3, -4):
-    df.drop(columns=[df.columns[i]], inplace=True)
-    
+df = df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]])    
 df.reset_index(drop=True, inplace=True)
 
 for i in [3, 4]:

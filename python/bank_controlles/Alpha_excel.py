@@ -29,8 +29,7 @@ df.columns = ['Дата', 'Номер документа',
               'Дебет', 'Кредит', 'Контрагент', 'ИНН', 'КПП',
               'Счет', 'БИК', 'Наименование банка', 'Назначение платежа']
 
-for i in [1, 6, 7]:
-    df.drop(columns=[df.columns[i]], inplace=True)
+df = df.drop(columns=[df.columns[1], df.columns[6], df.columns[7]])
 
 df.dropna(axis=0, how='all', inplace=True)
 df.reset_index(drop=True, inplace=True)
