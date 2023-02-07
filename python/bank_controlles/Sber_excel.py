@@ -2,6 +2,7 @@ import os.path
 import sys
 import pandas as pd
 import warnings
+import controllers as cont
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
@@ -26,24 +27,10 @@ df = pd.read_excel(xlsx, sheet_name=lst_names[0])
 df.dropna(axis='columns', how='all', inplace=True)
 
 # Поиск строки с заголовком
-index = -1
-for string in df.values:
-    index += 1
-    count = 0
-    for words in string:
-        if type(words) == str:
-            for word in words.lower().split():
-                if word == 'дата' or word == 'назначение':
-                    count += 1
-    if count == 2:
-        df.columns = df.iloc[0]
-        break
-    df.drop(labels=index, inplace=True)
-
+cont.find_header(df)
 
 df_with_header = df
 worksheets_dfs = []
-
 
 # Очистка всего, кроме колонок
 for worksheet in lst_names[1:]:
@@ -63,21 +50,13 @@ df.dropna(axis=0, how='all', inplace=True)
 df.reset_index(drop=True, inplace=True)
 
 
-index = -1
-for i in df[df.columns[0]].values:
-    index += 1
-    if type(i) == float:
-        df.drop(labels=index, inplace=True)
-    elif type(i) == str:
-        if i.count('.') != 2:
-            df.drop(labels=index, inplace=True)
-    else:
-        continue
+cont.check_date(df)
 
 df.dropna(axis='columns', how='all', inplace=True)
 
-
-df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]], inplace=True)
+for i in (-2, -3, -4):
+    df.drop(columns=[df.columns[i]], inplace=True)
+    
 df.reset_index(drop=True, inplace=True)
 
 for i in [3, 4]:
