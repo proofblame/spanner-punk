@@ -14,23 +14,18 @@ output_directory = sys.argv[4]
 
 path_to_file = directory + file_name + "." + file_extension
 
-df = pd.read_excel(path_to_file, sheet_name=0)
+xlsx = pd.ExcelFile(path_to_file)
+lst_names = xlsx.sheet_names
 
-names = ['Дата операции',
-        'БИК банка контрагента',
-        'Наименование банка контрагента',
-        'ИНН плательщика/получателя',
-        'Наименование плательщика/получателя',
-        'Дебет',
-        'Кредит',
-        'Назначение платежа',
-        ]
+# Поиск заголовка
+df = pd.read_excel(xlsx, sheet_name=lst_names[0])
+df.dropna(axis='columns', how='all', inplace=True)
 
+df = df.drop(columns=[df.columns[1], df.columns[2]])
+df = df[['Дата операции', 'БИК банка контрагента', 'Наименование банка контрагента',
+         'ИНН плательщика/получателя', 'Наименование плательщика/получателя',
+         'Дебет', 'Кредит', 'Назначение платежа']]
 
-df = df[names]
-check_columns = [3]
-cont.check_inn(df, check_columns)
-df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].round(2)
 
 output_file_path = output_directory + file_name + '.json'
 df.to_json(output_file_path, orient='records', force_ascii=False)
