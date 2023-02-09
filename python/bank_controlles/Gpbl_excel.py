@@ -22,8 +22,12 @@ df = pd.read_excel(xlsx, sheet_name=lst_names[0])
 df.dropna(axis='columns', how='all', inplace=True)
 
 df = df.drop(columns=[df.columns[1], df.columns[2]])
-df = df[['data', 'bik', 'bank_name', 'inn', 'ka', 'deb', 'cred', 'purpose']]
+df = df[['Дата операции', 'БИК банка контрагента', 'Наименование банка контрагента',
+         'ИНН плательщика/получателя', 'Наименование плательщика/получателя',
+         'Дебет', 'Кредит', 'Назначение платежа']]
 
+df = df.rename(columns ={ 'Дата операции': 'data', 'БИК банка контрагента': 'bik', 'Наименование банка контрагента' : 'bank_name', 
+        'ИНН плательщика/получателя':'inn', 'Наименование плательщика/получателя': 'ka', 'Дебет' : 'deb', 'Кредит' : 'cred', 'Назначение платежа': 'Purpose'})
 output_file_path = output_directory + file_name + '.json'
 df.to_json(output_file_path, orient='records', force_ascii=False)
 
