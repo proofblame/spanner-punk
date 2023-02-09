@@ -104,8 +104,9 @@ for col in check_columns_empty_val:
 
 # Округление значений в Дебет, Кредит
 df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].round(2)
-df = df[['data', 'bik', 'bank_name', 'inn', 'ka', 'deb', 'cred', 'purpose']]
 
+df = df.rename(columns ={"Дата": 'data',  "ИНН дебет": 'bik',  "Cчет дебет": 'bank_name', "ИНН кредит": 'inn',
+                         "Cчет кредит":'ka', "Дебет": 'deb', "Кредит": 'cred', "Назначение платежа": 'purpose'})
 output_file_path = output_directory + file_name + '.json'
 df.to_json(output_file_path, orient='records', force_ascii=False)
 
