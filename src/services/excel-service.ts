@@ -1,8 +1,8 @@
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import fs from "fs";
 import Extention from "../utils/Extention";
 
-const convertExcel = ({
+const convertExcel = async ({
   filename,
   extension,
 }: {
@@ -21,37 +21,31 @@ const convertExcel = ({
     `${__dirname}/../../outputs/`,
   ];
 
-  const childPython = spawn("python", options);
+  let err = null;
 
-  childPython.stdout.on("data", (data) => {
-    const res = JSON.parse(`${data}`);
-    if (res.status !== "success") {
-      throw new Error("Ошибка скрипта python");
-    }
-    fs.readFile(
-      `${__dirname}/../../outputs/${Extention.delete(filename)}.json`,
-      "utf8",
-      (error, fileContent) => {
-        if (error) {
-          console.log(error)
-          throw new Error("Не удалось прочесть файл");
-        }
-        console.log(fileContent);
-      }
-    );
-  });
-  childPython.stderr.on("data", (data) => {
-    console.error(`PYTHON_ERROR: ${data}`);
-  });
-  childPython.on("close", (code) => {
-    console.log(`Child process exited with code: ${code}`);
-    try {
-      // fs.unlinkSync(`${__dirname}/../../uploads/${filename}`);
-      console.log("DELETED")
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  const childPython = spawnSync("python", options);
+
+  err = childPython.stderr.toString("utf-8");
+
+  if (err === null) {
+    throw Error(err);
+  }
+
+  const res = JSON.parse(childPython.stdout.toString("utf-8"));
+  if (res.status !== "success") {
+    throw new Error("Ошибка скрипта python");
+  }
+
+  const data = fs.readFileSync(
+    `${__dirname}/../../outputs/${Extention.delete(filename)}.json`,
+    "utf8"
+  );
+  fs.unlinkSync(`${__dirname}/../../uploads/${filename}`);
+  fs.unlinkSync(
+    `${__dirname}/../../outputs/${Extention.delete(filename)}.json`
+  );
+
+  return JSON.parse(data);
 };
 
 export default convertExcel;

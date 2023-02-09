@@ -1,0 +1,122 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.form-upload__label {
+  display: flex;
+  align-items: center;
+}
+
+.form-upload__title {
+  max-width: 200px;
+  margin-right: 55px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.form-upload__input {
+  font-size: 18px;
+  font-weight: 300;
+  font-family: inherit;
+}
+
+.form-upload__input::file-selector-button {
+  min-width: 190px;
+  margin-right: 30px;
+  padding: 9px 15px;
+  border: none;
+  border-radius: 6px;
+  font-weight: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+#uploadForm_File {
+  text-transform: lowercase;
+  cursor: pointer;
+}
+
+#uploadForm_File,
+.form-upload__submit,
+progress,
+.form-upload__container {
+  width: 360px;
+}
+
+.form-upload__submit {
+  display: block;
+  margin-top: 25px;
+  padding: 9px 15px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background-color: #1649C1;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 300;
+  font-family: inherit;
+  transition: background-color 0.2s linear;
+}
+.form-upload__submit:active {
+  background-color: #1649C1;
+}
+
+.form-upload__submit:hover {
+  background-color: #1A5CF9;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s linear;
+}
+
+.form-upload__submit:focus-visible {
+  outline: none;
+}
+
+.form-upload__submit:focus {
+  outline: none;
+}
+
+progress {
+  height: 5px;
+  margin-top: 25px;
+  border: none;
+  background-color: #A0A3B6;
+}
+
+progress::-webkit-progress-bar {
+  border: none;
+  background-color: #A0A3B6;
+  /* background-color: #1649C1; */
+}
+
+progress::-webkit-progress-value {
+  background-color: #1649C1;
+}
+
+progress::-moz-progress-bar {
+  border: none;
+  background-color: #1649C1;
+}
+
+.form-upload__container {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.form-upload__status:empty::before {
+  content: "Не загружено";
+}
+
+.form-upload__status:empty + span {
+  display: none;
+}

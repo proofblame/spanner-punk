@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import multer, { FileFilterCallback } from "multer";
 import Extention from "../utils/Extention";
 import convertExcel from "../services/excel-service";
@@ -33,7 +33,7 @@ const validateFile = (
 
 export const upload = multer({ storage, fileFilter: validateFile });
 
-export const uploadFile = async (req: Request) => {
+export const uploadFile = async (req: Request, res: Response) => {
   const { file } = req;
 
   if (!file) {
@@ -47,6 +47,6 @@ export const uploadFile = async (req: Request) => {
     throw new Error("Файл должен быть .xlsx или .xlx");
   }
 
-
-  convertExcel({ filename, extension });
+  const data = await convertExcel({ filename, extension });
+  res.send({ data });
 };

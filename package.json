@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "main": "build/app.js",
   "scripts": {
-    "build": "rimraf build && tsc --build",
+    "build": "rimraf build && tsc --build && npm run copy",
     "start": "nodemon build/app.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q build/index.js\"",
+    "dev": "concurrently \"npx tsc --watch\" \"npm run copy\" \"nodemon -q build/index.js\"",
     "lint:eslint": "eslint . --ext .ts",
     "lint:prettier": "prettier . --check",
     "lint:tsc": "tsc --noEmit --incremental false",
-    "lint": "npm run lint:eslint && npm run lint:tsc && npm run lint:prettier"
+    "lint": "npm run lint:eslint && npm run lint:tsc && npm run lint:prettier",
+    "deploy:api": "scp -r -P 32001 ./build/* oris@148.251.2.74:/home/oris/backend/build",
+    "deploy:python": "scp -r -P 32001 ./python/* oris@148.251.2.74:/home/oris/backend/python",
+    "deploy": "npm run deploy:api && npm run deploy:python",
+    "copy": "scp ./src/public ./build"
   },
   "keywords": [],
   "author": "",
