@@ -41,7 +41,7 @@ df.reset_index(drop=True, inplace=True)
 
 cont.fill_deb(df, 1, 2)
 
-df = df[['Дата', 'БИК', 'Наименование банка', 'ИНН', 'Контрагент', 'Дебет', 'Кредит', 'Назначение платежа']]
+df = df[['data', 'bik', 'bank_name', 'inn', 'ka', 'deb', 'cred', 'purpose']]
 
 output_file_path = output_directory + file_name + '.json'
 df.to_json(output_file_path, orient='records', force_ascii=False)
