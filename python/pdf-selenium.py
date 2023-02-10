@@ -12,7 +12,7 @@ import os
 #ToDo принимать путь до файла
 directory = sys.argv[1]
 file_name = sys.argv[2]
-path_to_file = directory + '.' + file_name
+path_to_file = directory + file_name
 # path_to_file = r"C:\Users\maslovda\PycharmProjects\ScanerBank\new.pdf"
 
 os.environ['WDM_SSL_VERIFY'] = '0'
@@ -28,11 +28,21 @@ wait = WebDriverWait(driver, 5)
 wait.until(EC.element_to_be_clickable((By.ID, "processTask")))
 button = driver.find_element(By.ID, "processTask")
 button.click()
-wait = WebDriverWait(driver, 60)
+
+def check_title():
+    title = driver.title
+    if "iLovePDF" in title:
+        return
+    else:
+        time.sleep(2)
+        check_title()
+
+check_title()
 wait.until(EC.element_to_be_clickable((By.ID, "pickfiles")))
 button = driver.find_element(By.ID, "pickfiles")
 button.click()
 # Time before close
-time.sleep(10)
+time.sleep(4)
 driver.close()
-print(r'{"message": "pdf_converted"}')
+
+print(r'{"status": "success"}')
