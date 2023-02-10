@@ -29,15 +29,9 @@ wait.until(EC.element_to_be_clickable((By.ID, "processTask")))
 button = driver.find_element(By.ID, "processTask")
 button.click()
 
-def check_title():
-    title = driver.title
-    if "iLovePDF" in title:
-        return
-    else:
-        time.sleep(2)
-        check_title()
-
-check_title()
+while "iLovePDF" not in driver.title:
+    time.sleep(2)
+    
 wait.until(EC.element_to_be_clickable((By.ID, "pickfiles")))
 button = driver.find_element(By.ID, "pickfiles")
 button.click()
