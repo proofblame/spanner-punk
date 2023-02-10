@@ -1,11 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import multer, { FileFilterCallback } from "multer";
 import Extention from "../utils/Extention";
 import convertExcel from "../services/excel-service";
+import convertPDF from "../services/pdf-service";
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "uploads");
+    cb(null, `${__dirname}/../../uploads/`);
   },
   filename(req, file, cb) {
     cb(
@@ -21,9 +22,11 @@ const validateFile = (
   file: Express.Multer.File,
   cb: FileFilterCallback
 ) => {
+  console.log(file.mimetype);
   if (
     file.mimetype ===
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+    file.mimetype === "application/pdf"
   ) {
     cb(null, true);
   } else {
@@ -33,20 +36,40 @@ const validateFile = (
 
 export const upload = multer({ storage, fileFilter: validateFile });
 
-export const uploadFile = async (req: Request, res: Response) => {
-  const { file } = req;
+export const uploadFile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { file, body } = req;
 
-  if (!file) {
-    throw new Error("Ошибка загрузки файла");
+    if (!file) {
+      throw new Error("Ошибка загрузки файла");
+    }
+
+    const { filename, originalname } = file;
+    const extension = Extention.get(originalname);
+
+    let data;
+
+    if (body.type === "excel") {
+      const isExcel = Extention.check(extension, "xlsx");
+      if (!isExcel) {
+        throw new Error("Файл должен быть .xlsx или .xlx");
+      }
+      data = await convertExcel({ filename, extension });
+    } else {
+      const isPDF = Extention.check(extension, "pdf");
+      if (!isPDF) {
+        throw new Error("Файл должен быть .pdf");
+      }
+      console.log(123);
+      data = await convertPDF({ filename, extension });
+    }
+
+    res.send({ data });
+  } catch (err) {
+    next(err);
   }
-
-  const { filename, originalname } = file;
-  const extension = Extention.get(originalname);
-  const isExcel = Extention.check(extension, "xlsx");
-  if (!isExcel) {
-    throw new Error("Файл должен быть .xlsx или .xlx");
-  }
-
-  const data = await convertExcel({ filename, extension });
-  res.send({ data });
 };

@@ -12,6 +12,14 @@
 <body>
   <div class="demo-wrapper">
     <form class="form-upload" id="uploadForm" method="post" enctype="multipart/form-data">
+
+      <label class="form-upload__label" style="width:100%; justify-content: space-between;">
+        <p class="form-upload__title">Выберите тип файл:</p>
+        <select name="" id="uploadForm_Select" >
+          <option selected  value="excel">excel</option>
+          <option  value="pdf">pdf</option>
+        </select>
+      </label>
       <label class="form-upload__label" for="uploadForm_File">
         <span class="form-upload__title">Файл:</span>
         <input class="form-upload__input" id="uploadForm_File" type="file" name="file" accept="image/*">

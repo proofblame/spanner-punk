@@ -6,6 +6,7 @@ const fileInput = document.getElementById("uploadForm_File");
 const sizeText = document.getElementById("uploadForm_Size");
 const statusText = document.getElementById("uploadForm_Status");
 const progressBar = document.getElementById("progressBar");
+const selectedLabel = document.getElementById("uploadForm_Select");
 
 if (!statusText) {
   throw new Error("Кнопка не найдена");
@@ -40,12 +41,13 @@ form.addEventListener("submit", function (event) {
 
   if (fileInput.files.length > 0) {
     formSent.append("file", fileToUpload);
+    formSent.append("type", selectedLabel.value);
 
     // собираем запрос и подписываемся на событие progress
     xhr.upload.addEventListener("progress", progressHandler, false);
     xhr.addEventListener("load", loadHandler, false);
     // КУДА ОТПРАВЛИТЬ ФАЙЛ
-    xhr.open("POST", "/api/v1/backend/convert-excel");
+    xhr.open("POST", "http://localhost:3000/api/v1/backend/convert-excel");
     xhr.send(formSent);
   } else {
     alert("Сначала выберите файл");
