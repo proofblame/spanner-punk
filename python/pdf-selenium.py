@@ -30,6 +30,7 @@ driver.find_element(By.CSS_SELECTOR, "input[type='file']").send_keys(path_to_fil
 wait = WebDriverWait(driver, 5)
 time.sleep(1)
 # Buttons clicks
+time.sleep(1)
 wait.until(EC.element_to_be_clickable((By.ID, "processTask")))
 button = driver.find_element(By.ID, "processTask")
 button.click()
