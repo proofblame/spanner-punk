@@ -33,6 +33,17 @@ if (!form) {
   throw new Error("Форма не найдена");
 }
 
+function progressHandler(event) {
+  // считаем размер загруженного и процент от полного размера
+  const loadedMb = (event.loaded / BYTES_IN_MB).toFixed(1);
+  const totalSizeMb = (event.total / BYTES_IN_MB).toFixed(1);
+  const percentLoaded = Math.round((event.loaded / event.total) * 100);
+
+  progressBar.value = percentLoaded;
+  sizeText.textContent = `${loadedMb} из ${totalSizeMb} МБ`;
+  statusText.textContent = `Загружено ${percentLoaded}% | `;
+}
+
 form.addEventListener("submit", function (event) {
   event.preventDefault();
   const fileToUpload = fileInput.files[0];
@@ -47,7 +58,7 @@ form.addEventListener("submit", function (event) {
     xhr.upload.addEventListener("progress", progressHandler, false);
     xhr.addEventListener("load", loadHandler, false);
     // КУДА ОТПРАВЛИТЬ ФАЙЛ
-    xhr.open("POST", "http://localhost:3000/api/v1/backend/convert-excel");
+    xhr.open("POST", "/api/v1/backend/convert-excel");
     xhr.send(formSent);
   } else {
     alert("Сначала выберите файл");
@@ -57,14 +68,3 @@ form.addEventListener("submit", function (event) {
   // }, 2000)
   return false;
 });
-
-function progressHandler(event) {
-  // считаем размер загруженного и процент от полного размера
-  const loadedMb = (event.loaded / BYTES_IN_MB).toFixed(1);
-  const totalSizeMb = (event.total / BYTES_IN_MB).toFixed(1);
-  const percentLoaded = Math.round((event.loaded / event.total) * 100);
-
-  progressBar.value = percentLoaded;
-  sizeText.textContent = `${loadedMb} из ${totalSizeMb} МБ`;
-  statusText.textContent = `Загружено ${percentLoaded}% | `;
-}

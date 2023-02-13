@@ -6,7 +6,8 @@ import convertPDF from "../services/pdf-service";
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, `${__dirname}/../../uploads/`);
+    // cb(null, `${__dirname}/../../uploads/`);
+    cb(null, `/home/oris/backend/uploads/`);
   },
   filename(req, file, cb) {
     cb(
@@ -47,8 +48,7 @@ export const uploadFile = async (
     if (!file) {
       throw new Error("Ошибка загрузки файла");
     }
-
-    const { filename, originalname } = file;
+    const { filename, originalname, path } = file;
     const extension = Extention.get(originalname);
 
     let data;
@@ -65,7 +65,7 @@ export const uploadFile = async (
         throw new Error("Файл должен быть .pdf");
       }
       console.log(123);
-      data = await convertPDF({ filename, extension });
+      data = await convertPDF({ filename, path });
     }
 
     res.send({ data });

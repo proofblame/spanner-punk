@@ -13,7 +13,7 @@
     "deploy:api": "scp -r -P 32001 ./build/* oris@148.251.2.74:/home/oris/backend/build",
     "deploy:python": "scp -r -P 32001 ./python/* oris@148.251.2.74:/home/oris/backend/python",
     "deploy": "npm run build && npm run deploy:api && npm run deploy:python",
-    "copy": "scp ./src/public ./build"
+    "copy": "scp -r ./src/public ./build"
   },
   "keywords": [],
   "author": "",
