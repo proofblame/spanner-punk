@@ -20,18 +20,19 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 # Обработчик
 url = "https://www.ilovepdf.com/pdf_to_excel/"
 driver.get(url)
-
+time.sleep(1)
 # Load .pdf file
 driver.find_element(By.CSS_SELECTOR, "input[type='file']").send_keys(path_to_file)
 wait = WebDriverWait(driver, 5)
 # Buttons clicks
+time.sleep(1)
 wait.until(EC.element_to_be_clickable((By.ID, "processTask")))
 button = driver.find_element(By.ID, "processTask")
 button.click()
 
 while "iLovePDF" not in driver.title:
     time.sleep(2)
-    
+
 wait.until(EC.element_to_be_clickable((By.ID, "pickfiles")))
 button = driver.find_element(By.ID, "pickfiles")
 button.click()
