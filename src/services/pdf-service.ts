@@ -16,9 +16,10 @@ const convertPDF = async ({ pathFile }: { pathFile: string }) => {
     if (res.status !== "success") {
       throw new Error("Ошибка скрипта python");
     }
-    fs.unlinkSync(`${pathFile}`);
   } catch (error) {
     throw new Error(`Ошибка: ${error}`);
+  } finally {
+    fs.unlinkSync(`${pathFile}`);
   }
   return { status: "success" };
 };
