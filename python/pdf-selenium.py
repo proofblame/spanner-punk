@@ -4,7 +4,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-
 import sys
 import time
 import os
@@ -21,6 +20,7 @@ output_path = sys.argv[2]
 # path_to_file = r"C:\Users\maslovda\PycharmProjects\ScanerBank\new.pdf"
 
 os.environ['WDM_SSL_VERIFY'] = '0'
+
 # output_directory
 chromeOptions = webdriver.ChromeOptions()
 chromeOptions.headless = True
@@ -36,7 +36,6 @@ wait = WebDriverWait(driver, 5)
 time.sleep(1)
 # Buttons clicks
 time.sleep(1)
-wait.until(EC.element_to_be_clickable((By.ID, "processTask")))
 button = driver.find_element(By.ID, "processTask")
 button.click()
 
