@@ -7,3 +7,4 @@
 .env
 request.log
 error.log
+*.log
