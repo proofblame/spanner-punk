@@ -28,7 +28,8 @@ df.dropna(axis='columns', how='all', inplace=True)
 
 # Поиск строки с заголовком
 cont.find_header(df)
-
+df.dropna(axis='columns', how='all', inplace=True)
+df.reset_index(drop=True, inplace=True)
 
 # df_with_header = df
 # worksheets_dfs = []
@@ -47,13 +48,13 @@ cont.find_header(df)
 #     full_df.columns = df_with_header.columns
 #     df = pd.concat([df_with_header, full_df])
 
-df.dropna(axis='columns', how='all', inplace=True)
-df = df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]])
-df.dropna(axis=0, how='all', inplace=True)
-df.reset_index(drop=True, inplace=True)
 
 
+df[df.columns[0]] = df[df.columns[0]].astype(str)
 cont.check_date(df)
+df.dropna(axis='columns', how='all', inplace=True)
+df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]], inplace=True)
+df.dropna(axis=0, how='all', inplace=True)
 df.reset_index(drop=True, inplace=True)
 
 cont.fill_deb(df, -2, -3)
