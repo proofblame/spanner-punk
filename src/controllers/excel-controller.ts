@@ -57,7 +57,7 @@ export const uploadFile = async (
       if (!isExcel) {
         throw new Error("Файл должен быть .xlsx или .xlx");
       }
-      data = await convertExcel({ filename, extension });
+      data = await convertExcel({ filename });
     } else {
       const isPDF = Extention.check(extension, "pdf");
       if (!isPDF) {

@@ -8,15 +8,15 @@ warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
 # file_name = "./uploads/sber.xlsx"
 # directory
-directory = sys.argv[1]
+path_to_file = sys.argv[1]
 # file_name
 file_name = sys.argv[2]
 # file_extension
-file_extension = sys.argv[3]
+# file_extension = sys.argv[3]
 # output_directory
-output_directory = sys.argv[4]
+output_directory = sys.argv[3]
 
-path_to_file = directory + file_name + "." + file_extension
+# path_to_file = directory + file_name + "." + file_extension
 # print(path_to_file)
 
 xlsx = pd.ExcelFile(path_to_file)
@@ -54,7 +54,7 @@ cont.check_date(df)
 
 df.dropna(axis='columns', how='all', inplace=True)
 
-df = df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]])    
+df = df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]])
 df.reset_index(drop=True, inplace=True)
 
 for i in [3, 4]:
