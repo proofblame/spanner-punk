@@ -3,12 +3,13 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+
 
 import sys
 import time
 import os
 import urllib3.exceptions
+import wget
 
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -22,9 +23,9 @@ output_path = sys.argv[2]
 os.environ['WDM_SSL_VERIFY'] = '0'
 # output_directory
 chromeOptions = webdriver.ChromeOptions()
-prefs = {"download.default_directory": output_path}
-chromeOptions.add_experimental_option("prefs", prefs)
+chromeOptions.headless = True
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
+
 # Обработчик
 url = "https://www.ilovepdf.com/pdf_to_excel/"
 driver.get(url)
@@ -41,10 +42,11 @@ button.click()
 
 while "iLovePDF" not in driver.title:
     time.sleep(2)
+url = driver.current_url
+download = driver.find_element(By.ID, "pickfiles").get_attribute("href")
 
-wait.until(EC.element_to_be_clickable((By.ID, "pickfiles")))
-button = driver.find_element(By.ID, "pickfiles")
-button.click()
+wget.download(download, output_path)
+
 # Time before close
 time.sleep(4)
 driver.close()
