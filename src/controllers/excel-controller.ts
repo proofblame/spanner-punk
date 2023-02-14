@@ -6,8 +6,8 @@ import convertPDF from "../services/pdf-service";
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    // cb(null, `${__dirname}/../../uploads/`);
-    cb(null, `/home/oris/backend/uploads/`);
+    cb(null, `${__dirname}/../../uploads/`);
+    // cb(null, `/home/oris/backend/uploads/`);
   },
   filename(req, file, cb) {
     cb(
@@ -23,7 +23,6 @@ const validateFile = (
   file: Express.Multer.File,
   cb: FileFilterCallback
 ) => {
-  console.log(file.mimetype);
   if (
     file.mimetype ===
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
@@ -58,14 +57,17 @@ export const uploadFile = async (
       if (!isExcel) {
         throw new Error("Файл должен быть .xlsx или .xlx");
       }
-      data = await convertExcel({ filename, extension });
+      data = await convertExcel({ filename });
     } else {
       const isPDF = Extention.check(extension, "pdf");
       if (!isPDF) {
         throw new Error("Файл должен быть .pdf");
       }
-      console.log(123);
       data = await convertPDF({ filename, path });
+      if (data.status !== "success") {
+        throw new Error("Ошибка конвертации .pdf");
+      }
+      data = { message: "Файл конвертирован и загружен" };
     }
 
     res.send({ data });
