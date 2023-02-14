@@ -1,4 +1,4 @@
-import { spawn, spawnSync } from "child_process";
+import { spawnSync } from "child_process";
 import fs from "fs";
 
 const convertPDF = async ({
@@ -8,30 +8,20 @@ const convertPDF = async ({
   filename: string;
   path: string;
 }) => {
-  // const options = [`${__dirname}/../../python/pdf-selenium.py`, `${path}`];
-  const options = [`/home/oris/backend/python/pdf-selenium.py`, `${path}`];
-
-  let err = null;
-
-  const childPython = spawnSync("python", options);
-  console.log(childPython);
-  err = childPython.stderr.toString("utf-8");
-
-  if (err !== null) {
-    throw Error(err);
+  try {
+    const options = [`${__dirname}/../../python/pdf-selenium.py`, `${path}`];
+    // const options = [`/home/oris/backend/python/pdf-selenium.py`, `${path}`];
+    const childPython = spawnSync("python", options);
+    const res = await JSON.parse(childPython.stdout.toString("utf-8"));
+    if (res.status !== "success") {
+      throw new Error("Ошибка скрипта python");
+    }
+    fs.unlinkSync(`${__dirname}/../../uploads/${filename}`);
+    // fs.unlinkSync(`/home/oris/backend/uploads/${filename}`);
+  } catch (error) {
+    throw new Error(`Ошибка: ${error}`);
   }
-
-
-  const res = await JSON.parse(childPython.stdout.toString("utf-8"));
-  console.log(childPython.stdout.toString("utf-8"));
-  if (res.status !== "success") {
-    throw new Error("Ошибка скрипта python");
-  }
-
-  // fs.unlinkSync(`${__dirname}/../../uploads/${filename}`);
-  fs.unlinkSync(`/home/oris/backend/uploads/${filename}`);
-
-  return { data: 123 };
+  return { status: "success" };
 };
 
 export default convertPDF;
