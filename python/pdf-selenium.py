@@ -15,12 +15,16 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 #ToDo принимать путь до файла
 path_to_file = sys.argv[1]
-# file_name = sys.argv[2]
+output_path = sys.argv[2]
 # path_to_file = directory + file_name
 # path_to_file = r"C:\Users\maslovda\PycharmProjects\ScanerBank\new.pdf"
 
 os.environ['WDM_SSL_VERIFY'] = '0'
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+# output_directory
+chromeOptions = webdriver.ChromeOptions()
+prefs = {"download.default_directory": output_path}
+chromeOptions.add_experimental_option("prefs", prefs)
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
 # Обработчик
 url = "https://www.ilovepdf.com/pdf_to_excel/"
 driver.get(url)
