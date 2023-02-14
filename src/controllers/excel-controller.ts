@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import multer, { FileFilterCallback } from "multer";
+import path from "path";
 import Extention from "../utils/Extention";
 import convertExcel from "../services/excel-service";
 import convertPDF from "../services/pdf-service";
 
+const fileDirectory = path.resolve(__dirname, "../../uploads/");
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, `${__dirname}/../../uploads/`);
-    // cb(null, `/home/oris/backend/uploads/`);
+    cb(null, fileDirectory);
   },
   filename(req, file, cb) {
     cb(
@@ -47,7 +48,7 @@ export const uploadFile = async (
     if (!file) {
       throw new Error("Ошибка загрузки файла");
     }
-    const { filename, originalname, path } = file;
+    const { filename, originalname, path: pathFile } = file;
     const extension = Extention.get(originalname);
 
     let data;
@@ -63,11 +64,11 @@ export const uploadFile = async (
       if (!isPDF) {
         throw new Error("Файл должен быть .pdf");
       }
-      data = await convertPDF({ filename, path });
-      if (data.status !== "success") {
-        throw new Error("Ошибка конвертации .pdf");
-      }
-      data = { message: "Файл конвертирован и загружен" };
+      data = await convertPDF({ pathFile });
+      // if (data.status !== "success") {
+      //   throw new Error("Ошибка конвертации .pdf");
+      // }
+      // data = { message: "Файл конвертирован и загружен" };
     }
 
     res.send({ data });
