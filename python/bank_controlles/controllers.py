@@ -1,3 +1,4 @@
+import datetime
 # Проверяем ИНН
 def check_inn(df, clear_cols):
     df.reset_index(drop=True, inplace=True)
@@ -39,8 +40,8 @@ def check_date(df):
         index += 1
         if type(i) == float:
             df.drop(labels=index, inplace=True)
-        elif type(i) == str:
-            if i.count('.') != 2:
+        elif type(i) == str or type(i) == datetime.datetime:
+            if str(i).replace('-', '.').count('.') != 2:
                 df.drop(labels=index, inplace=True)
         else:
             continue

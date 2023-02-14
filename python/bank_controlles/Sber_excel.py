@@ -29,40 +29,40 @@ df.dropna(axis='columns', how='all', inplace=True)
 # Поиск строки с заголовком
 cont.find_header(df)
 
-df_with_header = df
-worksheets_dfs = []
 
-# Todo function Очистка всего, кроме колонок
-for worksheet in lst_names[1:]:
-    df = pd.read_excel(xlsx, sheet_name=worksheet, header=None)
-    if df.shape[1] > 8:
-        for i in range(df.shape[1]-9):
-            df.drop(df.columns[len(df.columns)-1], axis=1, inplace=True)
-    worksheets_dfs.append(df)
+# df_with_header = df
+# worksheets_dfs = []
 
-# Соединение в 1 ДФ
-if len(lst_names) > 1:
-    full_df = pd.concat(worksheets_dfs)
-    full_df.columns = df_with_header.columns
-    df = pd.concat([df_with_header, full_df])
+# # Todo function Очистка всего, кроме колонок
+# for worksheet in lst_names[1:]:
+#     df = pd.read_excel(xlsx, sheet_name=worksheet, header=None)
+#     if df.shape[1] > 8:
+#         for i in range(df.shape[1]-9):
+#             df.drop(df.columns[len(df.columns)-1], axis=1, inplace=True)
+#     worksheets_dfs.append(df)
 
+# # Соединение в 1 ДФ
+# if len(lst_names) > 1:
+#     full_df = pd.concat(worksheets_dfs)
+#     full_df.columns = df_with_header.columns
+#     df = pd.concat([df_with_header, full_df])
+
+df.dropna(axis='columns', how='all', inplace=True)
+df = df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]])
 df.dropna(axis=0, how='all', inplace=True)
 df.reset_index(drop=True, inplace=True)
 
 
 cont.check_date(df)
-
-df.dropna(axis='columns', how='all', inplace=True)
-
-df = df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]])
 df.reset_index(drop=True, inplace=True)
 
-for i in [3, 4]:
-    df[df.columns[i]].fillna(0, inplace=True)
-
-
-df.fillna('', inplace=True)
+cont.fill_deb(df, -2, -3)
 df = df.astype(str)
+
+for i in df.columns:
+    df[i] = df[i].str.replace('\n', ' ')
+for i in df.columns[3:5]:
+    df[i] = df[i].str.replace(' ', '').str.replace(',', '.')
 
 
 df.columns = ["Дата", "Cчет дебет", "Cчет кредит", 'Дебет', 'Кредит', "Назначение платежа"]
