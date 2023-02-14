@@ -5,5 +5,5 @@
 /outputs
 /build
 .env
-*.log
-.log
+request.log
+error.log

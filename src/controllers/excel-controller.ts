@@ -65,12 +65,12 @@ export const uploadFile = async (
         throw new Error("Файл должен быть .pdf");
       }
       data = await convertPDF({ pathFile });
-      // if (data.status !== "success") {
-      //   throw new Error("Ошибка конвертации .pdf");
-      // }
-      // data = { message: "Файл конвертирован и загружен" };
+      if (data.status !== "success") {
+        throw new Error("Ошибка конвертации .pdf");
+      }
+      const convertedFile = `${Extention.delete(filename)}.xlsx`;
+      data = await convertExcel({ filename: convertedFile });
     }
-
     res.send({ data });
   } catch (err) {
     next(err);
