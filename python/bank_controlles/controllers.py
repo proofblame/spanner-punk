@@ -54,12 +54,14 @@ def fill_deb(df, deb, cred):
     df[[df.columns[deb], df.columns[cred]]] = df[[df.columns[deb], df.columns[cred]]].round(2)
     return df
 
+# Reset index ver + hor
 def reset_ind(df):
     df.dropna(axis=1, how='all', inplace=True)
     df.dropna(axis=0, how='all', inplace=True)
     df.reset_index(drop=True, inplace=True)
     return df
 
+# create dictionary of inn
 def check_empty_inn_columns(df, columns):
     inn_dict = dict()
     for col in columns:
@@ -89,3 +91,4 @@ def check_empty_inn_columns(df, columns):
                 if df[df.columns[col+1]][index].lower() in inn_dict:
                     df[df.columns[col]][index] = inn_dict[df[df.columns[col+1]][index].lower()]
     return df
+    
