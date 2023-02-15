@@ -6,7 +6,8 @@ const fileInput = document.getElementById("uploadForm_File");
 const sizeText = document.getElementById("uploadForm_Size");
 const statusText = document.getElementById("uploadForm_Status");
 const progressBar = document.getElementById("progressBar");
-const selectedLabel = document.getElementById("uploadForm_Select");
+// const selectedLabel = document.getElementById("uploadForm_Select");
+const selectedBank = document.getElementById("uploadForm_SelectBank");
 
 if (!statusText) {
   throw new Error("Кнопка не найдена");
@@ -52,7 +53,8 @@ form.addEventListener("submit", function (event) {
 
   if (fileInput.files.length > 0) {
     formSent.append("file", fileToUpload);
-    formSent.append("type", selectedLabel.value);
+    // formSent.append("type", selectedLabel.value);
+    formSent.append("bank", selectedBank.value);
 
     // собираем запрос и подписываемся на событие progress
     xhr.upload.addEventListener("progress", progressHandler, false);

@@ -44,33 +44,50 @@ export const uploadFile = async (
 ) => {
   try {
     const { file, body } = req;
+    const { bank, type } = body;
 
     if (!file) {
       throw new Error("Ошибка загрузки файла");
     }
     const { filename, originalname, path: pathFile } = file;
-    const extension = Extention.get(originalname);
+    const extention = Extention.get(originalname);
 
     let data;
+    let fileName = filename;
 
-    if (body.type === "excel") {
-      const isExcel = Extention.check(extension, "xlsx");
-      if (!isExcel) {
-        throw new Error("Файл должен быть .xlsx или .xlx");
-      }
-      data = await convertExcel({ filename });
-    } else {
-      const isPDF = Extention.check(extension, "pdf");
-      if (!isPDF) {
-        throw new Error("Файл должен быть .pdf");
-      }
+    const isBank = Extention.check(bank, ["gpbl", "sber", "vtb", "alfa"]);
+    if (!isBank) {
+      throw new Error("Невалидный банк");
+    }
+
+    if (extention === "pdf") {
       data = await convertPDF({ pathFile });
       if (data.status !== "success") {
         throw new Error("Ошибка конвертации .pdf");
       }
-      const convertedFile = `${Extention.delete(filename)}.xlsx`;
-      data = await convertExcel({ filename: convertedFile });
+      fileName = `${Extention.delete(filename)}.xlsx`;
     }
+
+    data = await convertExcel({ fileName, bank });
+
+    // if (type === "excel") {
+    //   const isExcel = Extention.check(extension, "xlsx");
+    //   if (!isExcel) {
+    //     throw new Error("Файл должен быть .xlsx или .xlx");
+    //   }
+    //   data = await convertExcel({ filename, bank });
+    // } else {
+    //   const isPDF = Extention.check(extension, "pdf");
+    //   if (!isPDF) {
+    //     throw new Error("Файл должен быть .pdf");
+    //   }
+    //   data = await convertPDF({ pathFile });
+    //   if (data.status !== "success") {
+    //     throw new Error("Ошибка конвертации .pdf");
+    //   }
+    //   const convertedFile = `${Extention.delete(filename)}.xlsx`;
+    //   data = await convertExcel({ filename: convertedFile, bank });
+    // }
     res.send({ data });
   } catch (err) {
     next(err);

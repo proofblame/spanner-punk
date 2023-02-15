@@ -3,7 +3,13 @@ import fs from "fs";
 import path from "path";
 import Extention from "../utils/Extention";
 
-const convertExcel = async ({ filename }: { filename: string }) => {
+const convertExcel = async ({
+  fileName,
+  bank,
+}: {
+  fileName: string;
+  bank: string;
+}) => {
   let data = null;
 
   const uploadsDirectory = path.resolve(__dirname, "../../uploads/");
@@ -12,13 +18,13 @@ const convertExcel = async ({ filename }: { filename: string }) => {
 
   const options = [
     // directory
-    `${__dirname}/../../python/bank_controlles/Sber_excel.py`,
+    `${__dirname}/../../python/bank_controlles/${bank}_excel.py`,
 
     // path_to_file
-    path.resolve(uploadsDirectory, filename),
+    path.resolve(uploadsDirectory, fileName),
 
     // file_name
-    `${Extention.delete(filename)}`,
+    `${Extention.delete(fileName)}`,
 
     // output_directory
     `${outputDirectory}/`,
@@ -33,15 +39,15 @@ const convertExcel = async ({ filename }: { filename: string }) => {
     }
 
     data = fs.readFileSync(
-      `${outputDirectory}/${Extention.delete(filename)}.json`,
+      `${outputDirectory}/${Extention.delete(fileName)}.json`,
       "utf8"
     );
 
-    fs.unlinkSync(`${outputDirectory}/${Extention.delete(filename)}.json`);
+    fs.unlinkSync(`${outputDirectory}/${Extention.delete(fileName)}.json`);
   } catch (error) {
     throw new Error(childPython.stderr.toString("utf-8"));
   } finally {
-    fs.unlinkSync(`${uploadsDirectory}/${filename}`);
+    fs.unlinkSync(`${uploadsDirectory}/${fileName}`);
   }
 
   return JSON.parse(data);
