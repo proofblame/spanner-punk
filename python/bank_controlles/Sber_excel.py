@@ -52,10 +52,9 @@ df.reset_index(drop=True, inplace=True)
 
 df[df.columns[0]] = df[df.columns[0]].astype(str)
 cont.check_date(df)
-df.dropna(axis='columns', how='all', inplace=True)
+cont.reset_ind(df)
 df.drop(columns=[df.columns[-2], df.columns[-3], df.columns[-4]], inplace=True)
-df.dropna(axis=0, how='all', inplace=True)
-df.reset_index(drop=True, inplace=True)
+cont.reset_ind(df)
 
 cont.fill_deb(df, -2, -3)
 df = df.astype(str)
@@ -67,41 +66,43 @@ for i in df.columns[3:5]:
 
 
 df.columns = ["Дата", "Cчет дебет", "Cчет кредит", 'Дебет', 'Кредит', "Назначение платежа"]
-inn_dict = dict()
+
 df.insert(1, 'ИНН дебет', '')
 df.insert(3, 'ИНН кредит', '')
+
 clear_cols = [2, 4]
+# inn_dict = dict()
+# for col in clear_cols:
+#     index = -1
+#     for i in df[df.columns[col]].values:
+#         index += 1
+#         if type(i) == str:
+#             for elem in i.split():
+#                 if elem.isdigit():
+#                     df[df.columns[col]][index] = df[df.columns[col]][index].replace(elem, '')
+#                     if 10 <= len(elem) <= 12:
+#                         df[df.columns[col - 1]][index] = elem
+#                         break
+#         if df[df.columns[col - 1]][index].strip() not in inn_dict:
+#             if df[df.columns[col - 1]][index].strip() != '':
+#                 inn_dict[df[df.columns[col]][index].strip().lower()] = df[df.columns[col - 1]][index].strip()
 
-for col in clear_cols:
-    index = -1
-    for i in df[df.columns[col]].values:
-        index += 1
-        if type(i) == str:
-            for elem in i.split():
-                if elem.isdigit():
-                    df[df.columns[col]][index] = df[df.columns[col]][index].replace(elem, '')
-                    if 10 <= len(elem) <= 12:
-                        df[df.columns[col - 1]][index] = elem
-                        break
-        if df[df.columns[col - 1]][index].strip() not in inn_dict:
-            if df[df.columns[col - 1]][index].strip() != '':
-                inn_dict[df[df.columns[col]][index].strip().lower()] = df[df.columns[col - 1]][index].strip()
-
-    df[df.columns[col]] = df[df.columns[col]].str.replace('nan', '').str.strip()
+#     df[df.columns[col]] = df[df.columns[col]].str.replace('nan', '').str.strip()
 
 
-# for i in df.columns:
-#     df[i] = df[i].str.replace('\n', ' ')
-# Проверка колонок с ИНН
-check_columns_empty_val = [1, 3]
-for col in check_columns_empty_val:
-    index = -1
-    for i in df[df.columns[col]].values:
-        index += 1
-        if i == '':
-            # Замена значением из словаря
-            if df[df.columns[col+1]][index].lower() in inn_dict:
-                df[df.columns[col]][index] = inn_dict[df[df.columns[col+1]][index].lower()]
+# # for i in df.columns:
+# #     df[i] = df[i].str.replace('\n', ' ')
+# # Проверка колонок с ИНН
+# check_columns_empty_val = [1, 3]
+# for col in check_columns_empty_val:
+#     index = -1
+#     for i in df[df.columns[col]].values:
+#         index += 1
+#         if i == '':
+#             # Замена значением из словаря
+#             if df[df.columns[col+1]][index].lower() in inn_dict:
+#                 df[df.columns[col]][index] = inn_dict[df[df.columns[col+1]][index].lower()]
+cont.check_empty_inn_columns(df, clear_cols)
 
 # Округление значений в Дебет, Кредит
 df[[df.columns[-2], df.columns[-3]]] = df[[df.columns[-2], df.columns[-3]]].round(2)

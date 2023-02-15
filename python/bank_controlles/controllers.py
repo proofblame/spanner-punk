@@ -53,3 +53,39 @@ def fill_deb(df, deb, cred):
         df[df.columns[i]].fillna(0, inplace=True)
     df[[df.columns[deb], df.columns[cred]]] = df[[df.columns[deb], df.columns[cred]]].round(2)
     return df
+
+def reset_ind(df):
+    df.dropna(axis=1, how='all', inplace=True)
+    df.dropna(axis=0, how='all', inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    return df
+
+def check_empty_inn_columns(df, columns):
+    inn_dict = dict()
+    for col in columns:
+        index = -1
+        for i in df[df.columns[col]].values:
+            index += 1
+            if type(i) == str:
+                for elem in i.split():
+                    if elem.isdigit():
+                        df[df.columns[col]][index] = df[df.columns[col]][index].replace(elem, '')
+                        if 10 <= len(elem) <= 12:
+                            df[df.columns[col - 1]][index] = elem
+                            break
+            if df[df.columns[col - 1]][index].strip() not in inn_dict:
+                if df[df.columns[col - 1]][index].strip() != '':
+                    inn_dict[df[df.columns[col]][index].strip().lower()] = df[df.columns[col - 1]][index].strip()
+
+        df[df.columns[col]] = df[df.columns[col]].str.replace('nan', '').str.strip()
+
+    for col in columns:
+        col -=  1 
+        index = -1
+        for i in df[df.columns[col]].values:
+            index += 1
+            if i == '':
+                # Замена значением из словаря
+                if df[df.columns[col+1]][index].lower() in inn_dict:
+                    df[df.columns[col]][index] = inn_dict[df[df.columns[col+1]][index].lower()]
+    return df
