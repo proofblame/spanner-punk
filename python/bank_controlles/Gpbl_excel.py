@@ -19,7 +19,7 @@ lst_names = xlsx.sheet_names
 
 # Поиск заголовка
 df = pd.read_excel(xlsx, sheet_name=lst_names[0])
-df.dropna(axis='columns', how='all', inplace=True)
+cont.reset_ind(df)
 
 df = df.drop(columns=[df.columns[1], df.columns[2]])
 df = df[['Дата операции', 'БИК банка контрагента', 'Наименование банка контрагента',

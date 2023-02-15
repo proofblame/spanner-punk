@@ -19,7 +19,7 @@ lst_names = xlsx.sheet_names
 
 # Поиск заголовка
 df = pd.read_excel(xlsx, sheet_name=lst_names[0])
-df.dropna(axis='columns', how='all', inplace=True)
+cont.reset_ind(df)
 
 # Поиск строки с заголовком
 cont.find_header(df)
@@ -27,13 +27,10 @@ cont.find_header(df)
 
 df = df.drop(columns=[df.columns[1], df.columns[2], df.columns[5]])
 
-df.dropna(axis=0, how='all', inplace=True)
-df.reset_index(drop=True, inplace=True)
+cont.reset_ind(df)
 
 cont.check_date(df)
-
-df.dropna(axis=0, how='all', inplace=True)
-df.reset_index(drop=True, inplace=True)
+cont.reset_ind(df)
 
 cont.fill_deb(df, -2, -3)
 
