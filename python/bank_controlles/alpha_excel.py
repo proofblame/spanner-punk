@@ -6,15 +6,11 @@ import controllers as cont
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
-directory = sys.argv[1]
+path_to_file = sys.argv[1]
 file_name = sys.argv[2]
-file_extension = sys.argv[3]
-output_directory = sys.argv[4]
+output_directory = sys.argv[3]
 
-path_to_file = directory + file_name + '.' + file_extension
-# path_to_file = r"../Выписки по р. с. и иные документы/Альфабанк/Выписка_40702810129050006373_21.11.2021-21.11.2022.xlsx"
-
-xlsx = pd.ExcelFile(path_to_file)
+xlsx = pd.ExcelFile(file_name)
 lst_names = xlsx.sheet_names
 
 # Поиск заголовка
