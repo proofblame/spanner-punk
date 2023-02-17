@@ -13,11 +13,8 @@ import wget
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-#ToDo принимать путь до файла
 path_to_file = sys.argv[1]
 output_path = sys.argv[2]
-# path_to_file = directory + file_name
-# path_to_file = r"C:\Users\maslovda\PycharmProjects\ScanerBank\new.pdf"
 
 os.environ['WDM_SSL_VERIFY'] = '0'
 
