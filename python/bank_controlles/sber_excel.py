@@ -6,18 +6,10 @@ import controllers as cont
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
-# file_name = "./uploads/sber.xlsx"
-# directory
-path_to_file = sys.argv[1]
-# file_name
-file_name = sys.argv[2]
-# file_extension
-# file_extension = sys.argv[3]
-# output_directory
-output_directory = sys.argv[3]
 
-# path_to_file = directory + file_name + "." + file_extension
-# print(path_to_file)
+path_to_file = sys.argv[1]
+file_name = sys.argv[2]
+output_directory = sys.argv[3]
 
 xlsx = pd.ExcelFile(path_to_file)
 lst_names = xlsx.sheet_names
@@ -47,7 +39,6 @@ df.reset_index(drop=True, inplace=True)
 #     full_df = pd.concat(worksheets_dfs)
 #     full_df.columns = df_with_header.columns
 #     df = pd.concat([df_with_header, full_df])
-
 
 
 df[df.columns[0]] = df[df.columns[0]].astype(str)

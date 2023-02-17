@@ -7,14 +7,11 @@ import controllers as cont
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
 # file_name = "./uploads/sber.xlsx"
-directory = sys.argv[1]
+path_to_file = sys.argv[1]
 file_name = sys.argv[2]
-file_extension = sys.argv[3]
-output_directory = sys.argv[4]
+output_directory = sys.argv[3]
 
-path_to_file = directory + file_name + "." + file_extension
-
-xlsx = pd.ExcelFile(path_to_file)
+xlsx = pd.ExcelFile(file_name)
 lst_names = xlsx.sheet_names
 
 # Поиск заголовка
