@@ -1,4 +1,6 @@
 import datetime
+import pandas as pd
+
 # Проверяем ИНН
 def check_inn(df, clear_cols):
     df.reset_index(drop=True, inplace=True)
@@ -91,4 +93,23 @@ def check_empty_inn_columns(df, columns):
                 if df[df.columns[col+1]][index].lower() in inn_dict:
                     df[df.columns[col]][index] = inn_dict[df[df.columns[col+1]][index].lower()]
     return df
-    
+
+# Excel на нескольких листах
+def concat_excel(df, xlsx):
+    df_with_header = df
+    worksheets_dfs = []
+    lst_names = xlsx.sheet_names
+    # Todo function Очистка всего, кроме колонок
+    for worksheet in lst_names[1:]:
+        df = pd.read_excel(xlsx, sheet_name=worksheet, header=None)
+        if df.shape[1] > 8:
+            for i in range(df.shape[1]-9):
+                df.drop(df.columns[len(df.columns)-1], axis=1, inplace=True)
+        worksheets_dfs.append(df)
+
+    # Соединение в 1 ДФ
+    if len(lst_names) > 1:
+        full_df = pd.concat(worksheets_dfs)
+        full_df.columns = df_with_header.columns
+        df = pd.concat([df_with_header, full_df])
+    return df

@@ -23,23 +23,7 @@ cont.find_header(df)
 df.dropna(axis='columns', how='all', inplace=True)
 df.reset_index(drop=True, inplace=True)
 
-# df_with_header = df
-# worksheets_dfs = []
-
-# # Todo function Очистка всего, кроме колонок
-# for worksheet in lst_names[1:]:
-#     df = pd.read_excel(xlsx, sheet_name=worksheet, header=None)
-#     if df.shape[1] > 8:
-#         for i in range(df.shape[1]-9):
-#             df.drop(df.columns[len(df.columns)-1], axis=1, inplace=True)
-#     worksheets_dfs.append(df)
-
-# # Соединение в 1 ДФ
-# if len(lst_names) > 1:
-#     full_df = pd.concat(worksheets_dfs)
-#     full_df.columns = df_with_header.columns
-#     df = pd.concat([df_with_header, full_df])
-
+# cont.concat_excel(df, xlsx)
 
 df[df.columns[0]] = df[df.columns[0]].astype(str)
 cont.check_date(df)
