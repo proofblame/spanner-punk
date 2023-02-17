@@ -55,7 +55,7 @@ export const uploadFile = async (
     let data;
     let fileName = filename;
 
-    const isBank = Extention.check(bank, ["gpbl", "sber", "vtb", "alfa"]);
+    const isBank = Extention.check(bank, ["gpbl", "sber", "vtb", "alpha"]);
     if (!isBank) {
       throw new Error("Невалидный банк");
     }
