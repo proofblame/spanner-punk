@@ -10,7 +10,7 @@ path_to_file = sys.argv[1]
 file_name = sys.argv[2]
 output_directory = sys.argv[3]
 
-xlsx = pd.ExcelFile(file_name)
+xlsx = pd.ExcelFile(path_to_file)
 lst_names = xlsx.sheet_names
 
 # Поиск заголовка
