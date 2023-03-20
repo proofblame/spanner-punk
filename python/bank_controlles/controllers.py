@@ -1,5 +1,7 @@
 import datetime
 import pandas as pd
+import numpy as np
+import list_with_words as lw
 
 # Проверяем ИНН
 def check_inn(df, clear_cols):
@@ -113,3 +115,26 @@ def concat_excel(df, xlsx):
         full_df.columns = df_with_header.columns
         df = pd.concat([df_with_header, full_df])
     return df
+
+# Счёт открыт год назад
+def open_year_ago(df, data_column):
+    df.data_column = df.data_column.astype("string").replace("-",".")
+    df[data_column] = pd.to_datetime(df[data_column])
+    df[data_column].max()
+    return (pd.Timestamp.today() - df[data_column].max()).days <= 30
+
+# Отсутствие движений по р/с месяц
+def last_transaction_month(df, data_column):
+    return (pd.Timestamp.today() - df[data_column].min())/np.timedelta64(1,'M') >= 12
+
+# Поиск датафрейма по необходимым словам
+def find_words(df, payment_column):
+    for word in lw.list_with_words:
+        index = -1
+        index_set = set()
+        for row in df[payment_column].values:
+            index += 1
+            if word.lower() in row.lower():
+                index_set.add(index)
+    return df.iloc[sorted(index_set)]
+
